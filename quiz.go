@@ -1,8 +1,8 @@
 package quiz
 
 import (
-	"encoding/csv"
 	"bufio"
+	"encoding/csv"
 	"flag"
 	"fmt"
 	"io"
@@ -23,7 +23,7 @@ type quiz struct {
 }
 
 var (
-	scanner     = bufio.NewScanner(os.Stdin)
+	scanner   = bufio.NewScanner(os.Stdin)
 	fileName  = flag.String("filename", "problems.csv", "CSV File that conatins quiz questions")
 	timeLimit = flag.Int("limit", 30, "Time Limit for each question")
 )
@@ -64,12 +64,23 @@ func readCSV(f io.Reader) (*quiz, error) {
 func (quiz *quiz) run() {
 	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
 	fmt.Println("asking a q")
-	quizLoop:
+quizLoop:
 	for _, question := range quiz.questions {
 		fmt.Println(question.question)
 		ansCh := make(chan string)
-		go func(){
-
+		go func() {
+			scanner.Scan()
+			answer := scanner.Text()
+			ansCh <- answer
+		}()
+		select {
+		case <-timer.C:
+			break quizLoop
+		case answer := <-ansCh:
+			if answer == question.answer {
+				quiz.answeredCorrect++
+			}
+			quiz.answered++
 		}
 	}
 	return
