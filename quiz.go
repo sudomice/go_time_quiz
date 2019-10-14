@@ -36,7 +36,7 @@ func main() {
 
 	quiz, _ := readCSV(f)
 	quiz.run()
-	fmt.Printf("Answered %d correct out of %d of total questions\n", quiz.answeredCorrect, quiz.answered, len(quiz.questions))
+	fmt.Printf("\nAnswered %d correct out of %d of total questions\n", quiz.answeredCorrect, quiz.answered, len(quiz.questions))
 
 }
 func openFile(fileName string) (io.Reader, error) {
