@@ -1,4 +1,4 @@
-package quiz
+package main
 
 import (
 	"bufio"
@@ -9,8 +9,6 @@ import (
 	"os"
 	"time"
 )
-
-const totalQuestions = 6
 
 type Question struct {
 	question string
@@ -36,7 +34,7 @@ func main() {
 
 	quiz, _ := readCSV(f)
 	quiz.run()
-	fmt.Printf("\nAnswered %d correct out of %d of total questions\n", quiz.answeredCorrect, quiz.answered, len(quiz.questions))
+	fmt.Printf("\nAnswered %d correct out of %d answered questions\nTotal Questions %d", quiz.answeredCorrect, quiz.answered, len(quiz.questions))
 
 }
 func openFile(fileName string) (io.Reader, error) {
